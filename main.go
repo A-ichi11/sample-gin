@@ -1,25 +1,22 @@
 package main
 
 import (
-	"github.com/EikoNakashima/sample-gin/controller"
-	"github.com/EikoNakashima/sample-gin/middleware"
+	"github.com/EikoNakashima/sample-gin/handler"
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
 	engine := gin.Default()
-	// ミドルウェア
-	engine.Use(middleware.RecordUaAndTime)
+
 	// CRUD 書籍
-	bookEngine := engine.Group("/book")
+	group := engine.Group("/users")
 	{
-		v1 := bookEngine.Group("/v1")
-		{
-			v1.POST("/add", controller.BookAdd)
-			v1.GET("/list", controller.BookList)
-			v1.PUT("/update", controller.BookUpdate)
-			v1.DELETE("/delete", controller.BookDelete)
-		}
+		group.POST("/register", handler.Register)
+		group.GET("/getall", handler.GetAll)
+		group.GET("/getone", handler.GetOne)
+		group.PUT("/update", handler.Update)
+		group.DELETE("/delete", handler.Delete)
 	}
 	engine.Run(":3000")
 }
