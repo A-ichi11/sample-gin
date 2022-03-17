@@ -11,6 +11,7 @@ type User struct {
 }
 
 type UserInput struct {
+	ID   int    `json:"id" binding:"required"`
 	Name string `json:"name" binding:"required"`
 	Age  int    `json:"age" binding:"required"`
 }

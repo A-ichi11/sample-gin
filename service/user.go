@@ -1,5 +1,7 @@
 package service
 
-func Create() {
+type UserService struct{}
 
+func (UserService) Create() {
+	_, err := 
 }

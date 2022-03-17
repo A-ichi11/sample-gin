@@ -12,9 +12,9 @@ func main() {
 	// CRUD 書籍
 	group := engine.Group("/users")
 	{
-		group.POST("/register", handler.Register)
-		group.GET("/getall", handler.GetAll)
-		group.GET("/getone", handler.GetOne)
+		group.POST("/register", handler.Create)
+		group.GET("/userlist", handler.GetAll)
+		group.GET("/user", handler.GetOne)
 		group.PUT("/update", handler.Update)
 		group.DELETE("/delete", handler.Delete)
 	}
