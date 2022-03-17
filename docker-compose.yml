@@ -3,7 +3,7 @@ services:
   db:
     image: mysql:5.7
     environment:
-    - MYSQL_DATABASE=test_db
+    - MYSQL_DATABASE=sample_db
     - MYSQL_ROOT_PASSWORD=password
     command: >
       --character-set-server=utf8mb4

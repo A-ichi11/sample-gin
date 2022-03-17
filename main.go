@@ -2,21 +2,23 @@ package main
 
 import (
 	"github.com/EikoNakashima/sample-gin/handler"
+	"github.com/EikoNakashima/sample-gin/infra"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	engine := gin.Default()
+	g := gin.Default()
 
-	// CRUD 書籍
-	group := engine.Group("/users")
+	infra.DBInit()
+
+	routes := g.Group("/users")
 	{
-		group.POST("/register", handler.Create)
-		group.GET("/userlist", handler.GetAll)
-		group.GET("/user", handler.GetOne)
-		group.PUT("/update", handler.Update)
-		group.DELETE("/delete", handler.Delete)
+		routes.POST("/register", handler.Create)
+		routes.GET("/userlist", handler.GetAll)
+		routes.GET("/user", handler.GetOne)
+		routes.PUT("/update", handler.Update)
+		routes.DELETE("/delete", handler.Delete)
 	}
-	engine.Run(":3000")
+	g.Run(":3000")
 }
