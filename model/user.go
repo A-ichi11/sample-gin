@@ -2,16 +2,15 @@ package model
 
 import "time"
 
-type User struct {
+type Users struct {
 	ID        int       `xorm:"id pk autoincr"`
 	Name      string    `xorm:"name"`
-	Age       int       `xorm:"age"`
+	Address   string    `xorm:"address"`
 	CreatedAt time.Time `xorm:"created_at"`
 	UpdatedAt time.Time `xorm:"updated_at"`
 }
 
 type UserInput struct {
-	ID   int    `json:"id" binding:"required"`
-	Name string `json:"name" binding:"required"`
-	Age  int    `json:"age" binding:"required"`
+	Name    string `json:"name" binding:"required" xorm:"name"`
+	Address string `json:"address" binding:"required" xorm:"address"`
 }

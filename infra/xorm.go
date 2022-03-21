@@ -3,13 +3,31 @@ package infra
 import (
 	"log"
 
+	"github.com/EikoNakashima/sample-gin/model"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
 )
+
+type EngineInterface interface {
+	xorm.EngineInterface
+}
 
 func DBInit() *xorm.Engine {
 	engine, err := xorm.NewEngine("mysql", "root:root@tcp([127.0.0.1]:3306)/sample_db?charset=utf8mb4&parseTime=true")
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// xormで使ったSQLをログに吐きます
+	engine.ShowSQL(true)
+
+	// ユーザーテーブルが存在するかチェック
+	exist, err := engine.IsTableExist("users")
+	if err != nil {
+		log.Fatal(err)
+	}
+	if !exist {
+		engine.CreateTables(&model.Users{})
 	}
 	return engine
 }
