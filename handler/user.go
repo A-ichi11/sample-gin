@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -14,18 +13,25 @@ import (
 
 func Create(c *gin.Context) {
 	input := model.UserInput{}
+
+	// ヘッダーのJSONをinputにバインドします
 	err := c.ShouldBindWith(&input, binding.JSON)
 	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
+
+	// サービス層をNewします
 	service := c.MustGet(service.ServiceKey).(service.Servicer)
 	user := service.NewUser()
+
+	// サービス層のCreateメソッドを呼び出します
 	payload, err := user.Create(&input)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// ステータス200と、payloadを返します
 	c.JSON(http.StatusOK, payload)
 }
 
@@ -41,6 +47,7 @@ func GetAll(c *gin.Context) {
 }
 
 func GetOne(c *gin.Context) {
+	// user-idのパラメータを数字に変換します
 	userID, err := strconv.Atoi((c.Param("user-id")))
 	if err != nil {
 		log.Fatal(err)
@@ -56,15 +63,11 @@ func GetOne(c *gin.Context) {
 }
 
 func Update(c *gin.Context) {
-	fmt.Println("params:", c.Param("user-id"))
-	// userID := c.Param("user-id")
 	userID, err := strconv.Atoi((c.Param("user-id")))
 	if err != nil {
-		fmt.Print(err)
+		log.Fatal(err)
 	}
-	fmt.Println("userID:", userID)
 	input := model.UserInput{}
-	fmt.Println("input:", input)
 	err = c.ShouldBindWith(&input, binding.JSON)
 	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
@@ -72,8 +75,8 @@ func Update(c *gin.Context) {
 	}
 	service := c.MustGet(service.ServiceKey).(service.Servicer)
 	user := service.NewUser()
+
 	payload, err := user.Update(&input, userID)
-	fmt.Println("payload:", payload)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -82,7 +85,6 @@ func Update(c *gin.Context) {
 }
 
 func Delete(c *gin.Context) {
-	// userID := c.MustGet("user-id").(uint64)
 	userID, err := strconv.Atoi((c.Param("user-id")))
 	if err != nil {
 		log.Fatal(err)

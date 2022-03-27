@@ -8,10 +8,6 @@ import (
 	"github.com/go-xorm/xorm"
 )
 
-type EngineInterface interface {
-	xorm.EngineInterface
-}
-
 func DBInit() *xorm.Engine {
 	engine, err := xorm.NewEngine("mysql", "root:root@tcp([127.0.0.1]:3306)/sample_db?charset=utf8mb4&parseTime=true")
 	if err != nil {
@@ -26,8 +22,11 @@ func DBInit() *xorm.Engine {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// 存在しなければテーブルを作成します
 	if !exist {
 		engine.CreateTables(&model.Users{})
 	}
+
 	return engine
 }
